@@ -38,7 +38,6 @@ const taskSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Index for faster user-specific queries
 taskSchema.index({ user: 1, status: 1 });
 taskSchema.index({ user: 1, priority: 1 });
 taskSchema.index({ user: 1, createdAt: -1 });
