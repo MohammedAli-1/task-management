@@ -11,7 +11,10 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    // Name field: only allow letters and spaces
+    if (name === 'name' && /[^a-zA-Z\s]/.test(value)) return;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -23,6 +26,10 @@ const RegisterPage = () => {
     }
     if (form.name.trim().length < 2) {
       toast.error('Name must be at least 2 characters');
+      return;
+    }
+    if (/[^a-zA-Z\s]/.test(form.name)) {
+      toast.error('Name can only contain letters');
       return;
     }
     if (form.password.length < 6) {
@@ -65,10 +72,12 @@ const RegisterPage = () => {
               name="name"
               type="text"
               className="form-input"
-              placeholder="John Doe"
+              placeholder="John Doe (letters only)"
               value={form.name}
               onChange={handleChange}
               autoComplete="name"
+              pattern="[a-zA-Z\s]+"
+              title="Name can only contain letters and spaces"
               required
             />
           </div>
